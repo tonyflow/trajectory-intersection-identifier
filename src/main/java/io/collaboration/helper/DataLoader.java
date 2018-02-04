@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.groupingByConcurrent;
 
 /**
  * Reads CSV files containing the coordinates of users in space and performs a simple ETL by loading all
@@ -41,7 +42,7 @@ public class DataLoader {
                         Double.parseDouble(r.get(Headers.X_COORDINATE)),
                         Double.parseDouble(r.get(Headers.Y_COORDINATE)),
                         Integer.valueOf(r.get(Headers.FLOOR))))
-                .collect(groupingBy(EnhancedCoordinate::getUid));
+                .collect(groupingByConcurrent(EnhancedCoordinate::getUid));
 
         LOGGER.info("Data from file " + fileName + " ready");
 
